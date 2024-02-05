@@ -36,7 +36,7 @@ def decrypt(private_key, ciphertext):
     return plaintext
 
 keysize = 2048
-
+#test usage
 public_key, private_key = generate_keypair(keysize)
 message = "Hello, Father"
 encrypted_msg = encrypt(public_key, message)
