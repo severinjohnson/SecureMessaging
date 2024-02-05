@@ -28,7 +28,7 @@ def encrypt(public_key, plaintext):
 
 def decrypt(private_key, ciphertext):
     d ,n = private_key
-    #decrypting using pow
+    #decrypting using pow, The pow function here is used to perform modular exponentiation, which is a key operation in RSA decryption.
     decrypted_msg = pow(ciphertext, d, n)
 
     plaintext = decrypted_msg.to_bytes((decrypted_msg.bit_length() + 7) // 8, 'big').decode('utf-8')
