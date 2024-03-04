@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <h1>Dashboard</h1>
+    <form action="/search_users" method="get">
+        <input type="text" name="search" placeholder="Search users...">
+        <button type="submit">Search</button>
+    </form>
+    <ul>
+        {% for user in users %}
+            <li>{{ user.username }} - <a href="/send_message?recipient={{ user.username }}">Send Message</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
