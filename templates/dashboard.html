@@ -3,30 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        #messagesContainer { display: flex; flex-direction: column; align-items: flex-start; }
-        .messageSender { cursor: pointer; padding: 10px; border-bottom: 1px solid #ccc; }
-        .messageSender:hover { background-color: #f0f0f0; }
-        .messageContent { display: none; padding-left: 20px; }
-        .sendMessageLink {
-            display: block;
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px;
-            text-align: center;
-            text-decoration: none;
-            width: 300px; /* Match input and button width for consistency */
-            margin: 20px auto; /* Center the link */
-            border-radius: 5px;
-        }
-        .sendMessageLink:hover { opacity: 0.8; }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Welcome, {{ username }}</h1>
+    <div class="top-bar">
+        <h1>Welcome, {{ username }}</h1>
+        <a href="/logout" class="logoutLink">Logout</a>
+    </div>
 
-    <!-- Always visible link to send a new message -->
     <a href="/send_message" class="sendMessageLink">Send a New Message</a>
 
     <div id="messagesContainer">
@@ -56,3 +40,4 @@
     </script>
 </body>
 </html>
+

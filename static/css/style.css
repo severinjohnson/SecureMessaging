@@ -1,0 +1,32 @@
+/* style.css content */
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+    background-color: #333; /* Dark grey background */
+    color: white; /* White text */
+}
+
+input[type="text"], textarea {
+    background-color: #555;
+    color: white;
+    border: 1px solid #777;
+}
+
+button, .sendMessageLink, .logoutLink {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover, .sendMessageLink:hover, .logoutLink:hover {
+    opacity: 0.8;
+}
+
+.logoutLink {
+    background-color: #f44336;
+}
+
+a, a:visited {
+    color: #ADD8E6;
+}

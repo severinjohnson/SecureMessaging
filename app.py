@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from main import generate_keypair, encrypt, decrypt
 import sqlite3
 import os
@@ -90,7 +90,13 @@ def get_all_users():
     return users
 
 
-@app.route('/dashboard')
+@app.route('/logout')
+def logout():
+    # Remove username from session
+    session.pop('username', None)
+    # Optional: You can use flash messages to notify the user they have logged out
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('index'))
 @app.route('/dashboard')
 def dashboard():
     if 'username' not in session:
