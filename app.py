@@ -31,6 +31,7 @@ def register():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    error = None  # Define an error variable
     if request.method == 'POST':
         username = request.form['username']
         conn = get_db_connection()
@@ -40,8 +41,9 @@ def login():
             session['username'] = username
             return redirect(url_for('dashboard'))
         else:
-            return 'User not found', 404
-    return render_template('login.html')
+            error = 'User not found'  # Set the error message if user is not found
+    return render_template('login.html', error=error)
+
 
 
 @app.route('/send_message', methods=['GET', 'POST'])
@@ -89,20 +91,25 @@ def get_all_users():
 
 
 @app.route('/dashboard')
+@app.route('/dashboard')
 def dashboard():
     if 'username' not in session:
-        # Redirect to login if the user is not logged in
         return redirect(url_for('login'))
 
     username = session['username']
     conn = get_db_connection()
-    # Fetch messages for the logged-in user
-    user_messages = conn.execute('SELECT * FROM messages WHERE recipient = ? ORDER BY id DESC', (username,)).fetchall()
-    # Fetch all users for sending messages
-    user_records = conn.execute('SELECT username FROM users').fetchall()
+    messages = conn.execute('SELECT sender, message, created_at FROM messages WHERE recipient = ? ORDER BY created_at DESC', (username,)).fetchall()
     conn.close()
-    # Pass both user messages and user records to the template
-    return render_template('dashboard.html', username=username, messages=user_messages, users=user_records)
+
+    # Organize messages by sender
+    messages_by_sender = {}
+    for msg in messages:
+        sender = msg['sender']
+        if sender not in messages_by_sender:
+            messages_by_sender[sender] = []
+        messages_by_sender[sender].append({'message': msg['message'], 'created_at': msg['created_at']})
+
+    return render_template('dashboard.html', username=username, messages_by_sender=messages_by_sender)
 
 
 if __name__ == '__main__':

@@ -6,64 +6,53 @@
     <style>
         body { font-family: Arial, sans-serif; margin: 40px; }
         #messagesContainer { display: flex; flex-direction: column; align-items: flex-start; }
-        #messageList { list-style-type: none; padding: 0; width: 100%; }
-        #messageList li { cursor: pointer; padding: 10px; border-bottom: 1px solid #ccc; }
-        #messageList li:hover { background-color: #f0f0f0; }
-        #messageDisplay { padding-left: 20px; width: 100%; }
-        .message { padding: 10px; border: 1px solid #ddd; margin-bottom: 20px; margin-top: 20px; }
-        .new-message-btn {
-            padding: 10px;
+        .messageSender { cursor: pointer; padding: 10px; border-bottom: 1px solid #ccc; }
+        .messageSender:hover { background-color: #f0f0f0; }
+        .messageContent { display: none; padding-left: 20px; }
+        .sendMessageLink {
+            display: block;
             background-color: #4CAF50;
             color: white;
+            padding: 10px;
+            text-align: center;
             text-decoration: none;
+            width: 300px; /* Match input and button width for consistency */
+            margin: 20px auto; /* Center the link */
             border-radius: 5px;
-            margin-left: 20px;
         }
-        .messages-header {
-            display: flex;
-            align-items: center;
-        }
+        .sendMessageLink:hover { opacity: 0.8; }
     </style>
 </head>
 <body>
     <h1>Welcome, {{ username }}</h1>
-    <div id="messagesContainer">
-        <div class="messages-header">
-            <h2>Messages</h2>
-            <a href="/send_message" class="new-message-btn">New Message</a>
-        </div>
-        <div id="messageList">
-            {% for message in messages %}
-            <li onclick="showMessage('{{ message.sender }}', '{{ message.message }}')">
-                {{ message.sender }}
-            </li>
-            {% else %}
-            <p>No messages.</p>
-            {% endfor %}
-        </div>
 
-        <div id="messageDisplay">
-            <!-- Message content will be displayed here -->
-        </div>
+    <!-- Always visible link to send a new message -->
+    <a href="/send_message" class="sendMessageLink">Send a New Message</a>
+
+    <div id="messagesContainer">
+        <h2>Messages</h2>
+        {% if messages_by_sender %}
+            {% for sender, msgs in messages_by_sender.items() %}
+            <div class="messageSender" onclick="toggleMessages('{{ sender }}')">
+                <strong>{{ sender }}</strong>
+            </div>
+            <div id="{{ sender }}" class="messageContent">
+                {% for msg in msgs %}
+                <p>{{ msg.message }} <span>{{ msg.created_at }}</span></p>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No messages.</p>
+        {% endif %}
     </div>
 
     <script>
-        let lastClickedSender = null; // Keep track of the last clicked sender
-
-        function showMessage(sender, message) {
-            const display = document.getElementById('messageDisplay');
-            // Check if the clicked sender is the same as the last clicked sender
-            if (lastClickedSender === sender) {
-                // If the same sender is clicked again, clear the display and reset lastClickedSender
-                display.innerHTML = '';
-                lastClickedSender = null;
-            } else {
-                // If a different sender is clicked, show the message and update lastClickedSender
-                display.innerHTML = `<div class='message'><strong>From:</strong> ${sender}<br>${message}</div>`;
-                lastClickedSender = sender;
-            }
+        function toggleMessages(senderId) {
+            var element = document.getElementById(senderId);
+            var displayStyle = element.style.display;
+            element.style.display = displayStyle === "none" ? "block" : "none";
         }
     </script>
-
 </body>
 </html>

@@ -10,6 +10,7 @@
         input[type="text"], button { width: 100%; padding: 10px; margin: 10px 0; }
         button { background-color: #4CAF50; color: white; border: none; cursor: pointer; }
         button:hover { opacity: 0.8; }
+        .error { color: red; }
     </style>
 </head>
 <body>
@@ -20,6 +21,10 @@
             <input type="text" id="username" name="username" required>
         </div>
         <button type="submit">Login</button>
+        <!-- Display the error message if there is one -->
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
     </form>
 </body>
 </html>

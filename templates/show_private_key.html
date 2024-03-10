@@ -2,32 +2,53 @@
 <html>
 <head>
     <title>Your Private Key</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        form, textarea, button, a { max-width: 300px; margin: auto; display: block; }
+        textarea { width: 100%; padding: 10px; margin: 10px 0; height: 100px; box-sizing: border-box; }
+        button, a {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover, a:hover { opacity: 0.8; }
+    </style>
 </head>
 <body>
-    <p>Please write down your private key:</p>
-    <!-- Use a textarea to display the private key to make it easy to copy -->
-    <!-- The readonly attribute prevents modification but still allows copy actions -->
-    <textarea id="privateKey" readonly style="width: 100%; height: 100px;">{{ private_key }}</textarea>
-
-    <!-- Button to trigger the copy action -->
+    <h2>Please write down your private key:</h2>
+    <textarea id="privateKey" readonly>{{ private_key }}</textarea>
     <button onclick="copyPrivateKey()">Copy Private Key</button>
-
-    <!-- Assuming users are logged in after registration, direct them to the dashboard -->
+    <a href="javascript:void(0);" onclick="downloadPrivateKey()">Download Private Key as Text File</a>
     <a href="/dashboard">Go to Dashboard</a>
 
     <script>
         function copyPrivateKey() {
-            // Get the textarea element containing the private key
             var privateKeyElement = document.getElementById("privateKey");
-            // Select the text
             privateKeyElement.select();
-            privateKeyElement.setSelectionRange(0, 99999); // For mobile devices
-
-            // Copy the selected text to clipboard
+            privateKeyElement.setSelectionRange(0, 99999);
             document.execCommand("copy");
-
-            // Optional: Display a message to let the user know the text was copied
             alert("Copied the private key to clipboard");
+        }
+
+        function downloadPrivateKey() {
+            var privateKey = document.getElementById("privateKey").value;
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(privateKey));
+            element.setAttribute('download', 'privateKey.txt');
+
+            element.style.display = 'none';
+            document.body.appendChild(element);
+
+            element.click();
+
+            document.body.removeChild(element);
         }
     </script>
 </body>
