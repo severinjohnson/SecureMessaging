@@ -56,7 +56,8 @@ def send_message():
         recipient_public_key = conn.execute('SELECT public_key_n, public_key_e FROM users WHERE username = ?', (recipient,)).fetchone()
         if recipient_public_key:
             encrypted_msg = encrypt((recipient_public_key['public_key_e'], int(recipient_public_key['public_key_n'])), message)
-            conn.execute('INSERT INTO messages (sender, recipient, message) VALUES (?, ?, ?)', (session['username'], recipient, encrypted_msg))
+            encrypted_msg_hex = format(encrypted_msg, 'x')
+            conn.execute('INSERT INTO messages (sender, recipient, message) VALUES (?, ?, ?)',(session['username'], recipient, encrypted_msg_hex))
             conn.commit()
             conn.close()
             return redirect(url_for('dashboard'))
@@ -86,19 +87,23 @@ def get_all_users():
     conn.close()
     return users
 
+
 @app.route('/dashboard')
 def dashboard():
     if 'username' not in session:
+        # Redirect to login if the user is not logged in
         return redirect(url_for('login'))
+
     username = session['username']
     conn = get_db_connection()
     # Fetch messages for the logged-in user
-    user_messages = conn.execute('SELECT * FROM messages WHERE recipient = ?', (username,)).fetchall()
-    # Fetch all users for the potential search/display functionality
+    user_messages = conn.execute('SELECT * FROM messages WHERE recipient = ? ORDER BY id DESC', (username,)).fetchall()
+    # Fetch all users for sending messages
     user_records = conn.execute('SELECT username FROM users').fetchall()
     conn.close()
     # Pass both user messages and user records to the template
     return render_template('dashboard.html', username=username, messages=user_messages, users=user_records)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
