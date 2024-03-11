@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
-from main import generate_keypair, encrypt, decrypt
+from main import generate_keypair, encrypt
 import sqlite3
 import os
 
@@ -71,17 +71,6 @@ def send_message():
         users = get_all_users()  # Fetch the list of users from the database
         return render_template('send_message.html', users=users)
 
-@app.route('/decrypt_message', methods=['GET', 'POST'])
-def decrypt_message():
-    if 'username' not in session:
-        return redirect(url_for('login'))
-    if request.method == 'POST':
-        private_key_d = int(request.form['private_key_d'])
-        private_key_n = int(request.form['private_key_n'])
-        encrypted_msg = int(request.form['encrypted_message'])
-        decrypted_message = decrypt((private_key_d, private_key_n), encrypted_msg)
-        return render_template('decrypted_message.html', decrypted_message=decrypted_message)
-    return render_template('decrypt_message.html')
 
 def get_all_users():
     conn = get_db_connection()

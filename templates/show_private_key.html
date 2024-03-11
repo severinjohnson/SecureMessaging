@@ -2,24 +2,7 @@
 <html>
 <head>
     <title>Your Private Key</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        form, textarea, button, a { max-width: 300px; margin: auto; display: block; }
-        textarea { width: 100%; padding: 10px; margin: 10px 0; height: 100px; box-sizing: border-box; }
-        button, a {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            text-align: center;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        button:hover, a:hover { opacity: 0.8; }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <h2>Please write down your private key:</h2>

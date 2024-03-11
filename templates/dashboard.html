@@ -24,8 +24,11 @@
                 </div>
                 <div id="{{ sender }}" class="messageContent" style="display:none;">
                     {% for msg in msgs %}
-                        <p><span class="timestamp" data-timestamp="{{ msg.created_at }}"></span>
-                        <button onclick="copyMessage({{ msg.message | tojson | safe }})">Copy</button></p>
+                        <div class="messageBlock">
+                            <span class="timestamp" data-timestamp="{{ msg.created_at }}"></span>
+                            <textarea readonly class="messageTextarea">{{ msg.message }}</textarea>
+                            <button onclick="copyMessageToClipboard(this.previousElementSibling)">Copy</button>
+                        </div>
                     {% endfor %}
                 </div>
             {% endfor %}
@@ -45,14 +48,13 @@
             document.querySelectorAll(".timestamp").forEach(function(element) {
                 var utcTimestamp = element.getAttribute('data-timestamp');
                 var date = new Date(utcTimestamp + 'Z');
-                var estDate = new Date(date.getTime() - (5*60*60*1000*0)); // Subtract 5 hours for EST
+                var estDate = new Date(date.getTime() - (5*60*60*1000*0)); // Adjust for timezone
                 element.textContent = estDate.toLocaleString('en-US', {timeZone: 'America/New_York'});
             });
         });
 
-        function copyMessage(message) {
-            console.log(message);
-            navigator.clipboard.writeText(message).then(function() {
+        function copyMessageToClipboard(textarea) {
+            navigator.clipboard.writeText(textarea.value).then(function() {
                 alert("Message copied to clipboard");
             }, function(err) {
                 console.error('Could not copy text: ', err);
@@ -61,3 +63,4 @@
     </script>
 </body>
 </html>
+

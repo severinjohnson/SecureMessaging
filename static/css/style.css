@@ -1,4 +1,4 @@
-/* style.css content */
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
     margin: 40px;
@@ -6,73 +6,71 @@ body {
     color: white; /* White text */
 }
 
+a, a:visited {
+    color: white;
+}
+
+/* Input and Textarea Styles */
 input[type="text"], textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
     background-color: #555;
     color: white;
     border: 1px solid #777;
+    box-sizing: border-box;
 }
 
-button, .sendMessageLink, .logoutLink {
+/* Button and Link Styles */
+button, .sendMessageLink, .logoutLink, a {
+    display: block;
+    max-width: 300px;
+    margin: auto;
+    padding: 10px;
+    margin: 10px 0;
     background-color: #4CAF50;
     color: white;
+    text-decoration: none;
+    text-align: center;
     border: none;
     cursor: pointer;
-}
-
-button:hover, .sendMessageLink:hover, .logoutLink:hover {
-    opacity: 0.8;
+    border-radius: 5px;
 }
 
 .logoutLink {
     background-color: #f44336;
 }
 
-a, a:visited {
-    color: white;
+button:hover, .sendMessageLink:hover, .logoutLink:hover, a:hover {
+    opacity: 0.8;
 }
-.top-bar {
+
+/* Layout and Container Styles */
+.top-bar, .messages-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative;
-}
-
-.messages-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     margin-bottom: 20px;
 }
 
 .sendMessageLink {
     margin-left: 20px; /* Adjust as needed */
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    text-decoration: none;
 }
 
-.logoutLink {
-    padding: 10px;
-    background-color: #f44336;
-    color: white;
-    border-radius: 5px;
-    text-decoration: none;
-}
+/* Message Sender Styles */
 .messageSender {
     cursor: pointer;
     padding: 10px;
-    margin-bottom: 5px; /* Space between each username box */
-    background-color: #555; /* Darker background for the boxes */
-    color: white; /* White text color */
-    border-radius: 10px; /* Rounded corners */
-    width: fit-content; /* Adjust the box size to fit the content */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Optional: adds a subtle shadow for depth */
-    transition: background-color 0.3s; /* Smooth transition for background color change */
+    margin-bottom: 5px;
+    background-color: #555;
+    color: white;
+    border-radius: 10px;
+    width: fit-content;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: background-color 0.3s;
 }
 
 .messageSender:hover {
-    background-color: #666; /* Lighter shade when hovered */
+    background-color: #666;
 }
-
