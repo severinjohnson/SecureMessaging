@@ -28,5 +28,51 @@ button:hover, .sendMessageLink:hover, .logoutLink:hover {
 }
 
 a, a:visited {
-    color: #ADD8E6;
+    color: white;
 }
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.messages-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.sendMessageLink {
+    margin-left: 20px; /* Adjust as needed */
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.logoutLink {
+    padding: 10px;
+    background-color: #f44336;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+}
+.messageSender {
+    cursor: pointer;
+    padding: 10px;
+    margin-bottom: 5px; /* Space between each username box */
+    background-color: #555; /* Darker background for the boxes */
+    color: white; /* White text color */
+    border-radius: 10px; /* Rounded corners */
+    width: fit-content; /* Adjust the box size to fit the content */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Optional: adds a subtle shadow for depth */
+    transition: background-color 0.3s; /* Smooth transition for background color change */
+}
+
+.messageSender:hover {
+    background-color: #666; /* Lighter shade when hovered */
+}
+

@@ -8,23 +8,26 @@
 <body>
     <div class="top-bar">
         <h1>Welcome, {{ username }}</h1>
-        <a href="/logout" class="logoutLink">Logout</a>
+        <a href="/logout" class="logoutLink" style="position: absolute; right: 40px; top: 20px;">Logout</a>
     </div>
 
-    <a href="/send_message" class="sendMessageLink">Send a New Message</a>
-
-    <div id="messagesContainer">
+    <div class="messages-header">
         <h2>Messages</h2>
+        <a href="/send_message" class="sendMessageLink">Send a New Message</a>
+    </div>
+
+   <div id="messagesContainer">
         {% if messages_by_sender %}
             {% for sender, msgs in messages_by_sender.items() %}
-            <div class="messageSender" onclick="toggleMessages('{{ sender }}')">
-                <strong>{{ sender }}</strong>
-            </div>
-            <div id="{{ sender }}" class="messageContent">
-                {% for msg in msgs %}
-                <p>{{ msg.message }} <span>{{ msg.created_at }}</span></p>
-                {% endfor %}
-            </div>
+                <div class="messageSender" onclick="toggleMessages('{{ sender }}')">
+                    <strong>{{ sender }}</strong>
+                </div>
+                <div id="{{ sender }}" class="messageContent" style="display:none;">
+                    {% for msg in msgs %}
+                        <p><span class="timestamp" data-timestamp="{{ msg.created_at }}"></span>
+                        <button onclick="copyMessage({{ msg.message | tojson | safe }})">Copy</button></p>
+                    {% endfor %}
+                </div>
             {% endfor %}
         {% else %}
             <p>No messages.</p>
@@ -37,7 +40,24 @@
             var displayStyle = element.style.display;
             element.style.display = displayStyle === "none" ? "block" : "none";
         }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll(".timestamp").forEach(function(element) {
+                var utcTimestamp = element.getAttribute('data-timestamp');
+                var date = new Date(utcTimestamp + 'Z');
+                var estDate = new Date(date.getTime() - (5*60*60*1000*0)); // Subtract 5 hours for EST
+                element.textContent = estDate.toLocaleString('en-US', {timeZone: 'America/New_York'});
+            });
+        });
+
+        function copyMessage(message) {
+            console.log(message);
+            navigator.clipboard.writeText(message).then(function() {
+                alert("Message copied to clipboard");
+            }, function(err) {
+                console.error('Could not copy text: ', err);
+            });
+        }
     </script>
 </body>
 </html>
-
